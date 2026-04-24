@@ -1,0 +1,46 @@
+# ============ Core Dependencies ============
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+# Async HTTP client
+aiohttp==3.10.0
+requests==2.32.3
+# UI Framework
+streamlit==1.40.0
+# Data validation
+pydantic==2.9.0
+
+# ============ LLM/AI Dependencies ============
+# OpenAI API
+openai==1.54.0
+# Anthropic Claude API
+anthropic==0.39.0
+# Hugging Face
+huggingface-hub==0.26.0
+transformers==4.46.0
+
+# ============ Development Dependencies ============
+# Testing
+pytest==8.3.0
+pytest-asyncio==0.24.0
+# Code quality
+black==24.10.0
+flake8==7.1.1
+isort==5.13.2
+# Linting
+pylint==3.3.0
+# Environment variables
+python-dotenv==1.0.1
+
+# ============ Optional Dependencies ============
+# Database (for production)
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+# Caching
+redis==5.2.0
+# Job queue
+celery==5.4.0
+# Monitoring
+prometheus-client==0.21.0
+# Logging
+loguru==0.7.2
