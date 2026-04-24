@@ -243,47 +243,8 @@ docker run -p 8000:8000 \
   code-reviewer-bot
 ```
 
-## 🚢 Deployment Options
 
-### **Streamlit Cloud** (Easiest, Free)
-1. Push to GitHub
-2. Go to [share.streamlit.io](https://share.streamlit.io)
-3. Deploy directly from GitHub
 
-### **Heroku** (Easy, Free tier available)
-```bash
-heroku create code-reviewer-bot
-git push heroku main
-```
-
-### **Railway** (Recommended, Simple)
-1. Connect GitHub repository
-2. Set environment variables
-3. Deploy!
-
-### **AWS / GCP / Azure** (Production)
-- Use Docker container with Kubernetes
-- Set up load balancing and auto-scaling
-
-## 💡 Interview Talking Points
-
-### "Tell me about this project"
-*"I built an AI-powered code review system that analyzes code snippets and provides intelligent feedback on quality, bugs, optimization, and complexity. It supports multiple programming languages and LLM providers (OpenAI, Claude, Hugging Face). The backend is a FastAPI server with a Streamlit UI, and it's designed to be scalable and production-ready."*
-
-### "What was the most challenging part?"
-*"Managing LLM context length for large code files and balancing accuracy vs. cost. I implemented prompt engineering techniques to get consistent, structured JSON responses from different LLM providers. Also, handling edge cases like different code formatting and language detection."*
-
-### "How would you scale this?"
-*"I'd implement:*
-- *Async job queue (Celery) for long-running reviews*
-- *Redis caching for duplicate code snippets*
-- *Database (PostgreSQL) to store review history*
-- *Multi-model ensemble for different analysis types*
-- *API rate limiting and user authentication*
-- *Monitoring with Prometheus and error tracking with Sentry"*
-
-### "What did you learn?"
-*"Working with multiple LLM APIs and their different response formats, prompt engineering best practices, async Python, REST API design, and deployment considerations. Also learned about the trade-offs between model quality, cost, and latency."*
 
 ## 📈 Performance
 
@@ -327,23 +288,4 @@ git push heroku main
 - [Claude API](https://docs.anthropic.com/)
 - [Hugging Face](https://huggingface.co/)
 
-## 📄 License
 
-MIT License - See `LICENSE` file for details
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 💬 Questions?
-
-Feel free to open an issue or start a discussion. Happy coding! 🚀
-
----
-
-**Built with ❤️ for Big Four interviews**
