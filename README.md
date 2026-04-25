@@ -1,291 +1,189 @@
 # 🤖 Smart Code Reviewer Bot
 
-An AI-powered code review system that analyzes code snippets and provides intelligent feedback on quality, bugs, optimization, and more.
+A free, AI-powered code review tool built with Streamlit. Paste your code and get instant feedback on quality, security, bugs, and performance — no API key required!
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
+---
 
-## 🎯 Features
+## ✨ Features
 
-- **Multi-Language Support**: Review Python, JavaScript, Java, C++, Go, Rust, and more
-- **Comprehensive Analysis**:
-  - Code quality assessment with scoring
-  - Bug and security vulnerability detection
-  - Code explanation and purpose analysis
-  - Performance optimization suggestions
-  - Complexity analysis (time, space, cyclomatic)
-- **Multiple LLM Backends**: OpenAI (GPT-4), Anthropic Claude, Hugging Face, or mock for testing
-- **REST API**: Production-ready FastAPI server
-- **Web UI**: Beautiful Streamlit interface for easy use
-- **Batch Processing**: Review multiple code snippets at once
-- **Review History**: Track and retrieve past reviews
+- 🔍 **Automatic language detection** — Python, JavaScript, Java, C++, Rust, Go, TypeScript
+- 🛡️ **Security analysis** — detects hardcoded secrets, eval(), mutable defaults, and more
+- 🐛 **Bug detection** — catches empty except blocks, bare exceptions, deep nesting
+- ⚡ **Performance insights** — estimates time and space complexity
+- 📊 **Code quality score** — rated out of 10
+- 📈 **Analytics dashboard** — track your review history
+- 💯 **100% free** — works offline, no API key needed (Mock mode)
+
+---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Python 3.9+
-- pip or conda
-- (Optional) API key for OpenAI, Claude, or Hugging Face
-
-### Installation
-
+### 1. Clone the repository
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/code-reviewer-bot.git
+git clone https://github.com/your-username/code-reviewer-bot.git
 cd code-reviewer-bot
+```
 
-# Create virtual environment
+### 2. Create a virtual environment
+```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate        # Windows
+source venv/bin/activate     # Mac/Linux
+```
 
-# Install dependencies
+### 3. Install dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-### Usage
-
-#### 1. **Web UI (Recommended for getting started)**
-
+### 4. Run the app
 ```bash
-streamlit run ui/app.py
+python -m streamlit run ui_app.py
 ```
 
-Then open `http://localhost:8501` in your browser.
-
-#### 2. **REST API**
-
-```bash
-python api/main.py
+### 5. Open in browser
+```
+http://localhost:8501
 ```
 
-Server runs on `http://localhost:8000`
-
-**API Documentation**: Visit `http://localhost:8000/docs` for interactive Swagger UI
-
-**Example request:**
-```bash
-curl -X POST "http://localhost:8000/review" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "code": "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)",
-    "detailed": true
-  }'
-```
-
-#### 3. **Python Module (Programmatic use)**
-
-```python
-import asyncio
-from src.reviewer import CodeReviewer
-from src.llm_provider import get_llm_provider
-
-async def main():
-    # Initialize with mock provider (no API key needed)
-    llm = get_llm_provider("mock")
-    reviewer = CodeReviewer(llm)
-    
-    code = """
-    def hello():
-        print('world')
-    """
-    
-    result = await reviewer.review_code(code)
-    print(result)
-
-asyncio.run(main())
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file:
-
-```bash
-# LLM Provider choice: "openai", "claude", "huggingface", or "mock"
-LLM_PROVIDER=mock
-
-# API Keys (only needed for respective providers)
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-HUGGINGFACE_API_KEY=hf_...
-
-# Server settings
-PORT=8000
-HOST=0.0.0.0
-```
-
-### Switching LLM Providers
-
-**Option 1: Environment Variable**
-```bash
-export LLM_PROVIDER=openai
-python api/main.py
-```
-
-**Option 2: Direct initialization**
-```python
-from src.llm_provider import get_llm_provider
-
-# OpenAI
-llm = get_llm_provider("openai", model="gpt-4")
-
-# Claude
-llm = get_llm_provider("claude", model="claude-3-sonnet-20240229")
-
-# Hugging Face (free, open-source)
-llm = get_llm_provider("huggingface", model="mistralai/Mistral-7B-Instruct-v0.1")
-
-# Mock (for testing)
-llm = get_llm_provider("mock")
-```
-
-## 📊 API Endpoints
-
-### Submit a Review
-```
-POST /review
-Content-Type: application/json
-
-{
-  "code": "python code here",
-  "detailed": true
-}
-
-Response:
-{
-  "review_id": "a1b2c3d4",
-  "status": "success",
-  "detected_language": "python",
-  "code_length": 150,
-  "review": {
-    "code_quality": {...},
-    "bugs_security": {...},
-    "explanation": {...},
-    "optimization": {...},
-    "complexity": {...}
-  },
-  "timestamp": "2024-01-15T10:30:00"
-}
-```
-
-### Get Review by ID
-```
-GET /review/{review_id}
-```
-
-### List Recent Reviews
-```
-GET /reviews?limit=10
-```
-
-### Batch Review
-```
-POST /batch-review
-Content-Type: application/json
-
-{
-  "codes": ["code1", "code2", "code3"]
-}
-```
-
-### Health Check
-```
-GET /health
-```
+---
 
 ## 📁 Project Structure
 
 ```
 code-reviewer-bot/
-├── src/
-│   ├── reviewer.py          # Core review logic
-│   └── llm_provider.py      # LLM API handlers
-├── api/
-│   └── main.py              # FastAPI server
-├── ui/
-│   └── app.py               # Streamlit web UI
-├── tests/
-│   ├── test_reviewer.py
-│   └── test_api.py
-├── examples/
-│   └── sample_reviews.json
-├── requirements.txt         # Python dependencies
-├── .env.example            # Example environment variables
-├── .gitignore              # Git ignore rules
-├── README.md               # This file
-└── Dockerfile              # Container setup
+│
+├── ui_app.py              # Streamlit web interface
+├── src_reviewer.py        # Core review logic & language detection
+├── src_llm_provider.py    # LLM providers (Mock, OpenAI, Claude, HuggingFace)
+├── api_main.py            # FastAPI backend (optional)
+├── requirements.txt       # Python dependencies
+├── setup.py               # Project setup
+├── Dockerfile             # Docker configuration
+│
+├── src/                   # Source modules
+├── api/                   # API modules
+├── tests/                 # Unit tests
+├── examples/              # Example usage scripts
+└── README.md              # This file
 ```
 
-## 🧪 Testing
+---
 
-```bash
-# Run tests
-pytest tests/ -v
+## 🧠 How It Works
 
-# Run with coverage
-pytest --cov=src tests/
-
-# Async test example
-pytest tests/test_reviewer.py::test_review_code -v
+```
+You paste code
+      ↓
+ui_app.py (Streamlit UI)
+      ↓
+src_reviewer.py (detects language, builds prompt)
+      ↓
+src_llm_provider.py (analyzes code)
+      ↓
+Review displayed on screen
 ```
 
-## 🐳 Docker Deployment
+The **Mock provider** (default, free) uses rule-based static analysis to review your code locally — no internet needed.
+
+---
+
+## 🔍 What Gets Checked
+
+| Category | Examples |
+|----------|---------|
+| **Code Quality** | Long lines, magic numbers, duplicate code, function length |
+| **Security** | Hardcoded passwords, eval(), empty catch blocks, mutable defaults |
+| **Bugs** | Bare except, deep nesting, unresolved TODOs |
+| **Performance** | Time/space complexity estimation, nested loops |
+| **Style** | Missing docstrings, type hints, print vs logging |
+
+---
+
+## ⚙️ LLM Providers
+
+| Provider | Cost | API Key Required |
+|----------|------|-----------------|
+| **Mock** (default) | ✅ Free | ❌ No |
+| OpenAI (GPT) | 💰 Paid | ✅ Yes |
+| Anthropic Claude | 💰 Paid | ✅ Yes |
+| Hugging Face | 🆓 Free tier | ✅ Yes |
+
+To use a paid provider, create a `.env` file:
+```
+OPENAI_API_KEY=your-key-here
+ANTHROPIC_API_KEY=your-key-here
+HUGGINGFACE_API_KEY=your-key-here
+```
+
+---
+
+## 🛠️ Requirements
+
+- Python 3.10+
+- Windows / Mac / Linux
+- Internet not required (Mock mode)
+
+---
+
+## 🧪 Running Tests
 
 ```bash
-# Build image
+pytest tests/
+```
+
+---
+
+## 🐳 Docker (Optional)
+
+```bash
 docker build -t code-reviewer-bot .
-
-# Run container
-docker run -p 8000:8000 \
-  -e OPENAI_API_KEY=sk-... \
-  code-reviewer-bot
+docker run -p 8501:8501 code-reviewer-bot
 ```
 
+---
 
+## 📝 Example Review Output
 
+```
+Code Quality Score: 7/10
+Issues:
+  ❌ Hardcoded password detected — use environment variables
+  ❌ Deep nesting at line 5 — consider early returns
 
-## 📈 Performance
+Suggestions:
+  💡 Use logging instead of print()
+  💡 Add type hints for better readability
 
-- **Average review time**: 1-3 seconds (depends on LLM)
-- **Max code size**: 10,000 characters
-- **Batch processing**: Up to 100 snippets per request
-- **API response time**: <100ms (excluding LLM call)
+Time Complexity: O(n)
+Space Complexity: O(1)
+```
 
-## 🔒 Security Considerations
+---
 
-- Validate and sanitize all user inputs
-- Use environment variables for API keys (never hardcode)
-- Rate limit API endpoints
-- Add authentication for production
-- Strip sensitive information from code before sending to LLM
-- Use HTTPS in production
+## 🤝 Contributing
 
-## 🐛 Known Limitations
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'Add my feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
 
-- LLM responses can occasionally be inconsistent
-- Very long code files (>10KB) may be truncated
-- Some edge case programming languages not detected
-- Free tier LLMs may have quality trade-offs
+---
 
-## 🛣️ Roadmap
+## 📄 License
 
-- [ ] Support for more programming languages
-- [ ] GitHub integration (review PRs automatically)
-- [ ] Custom review rules and templates
-- [ ] Code clone detection
-- [ ] Performance benchmarking
-- [ ] Team collaboration features
-- [ ] VS Code extension
-- [ ] IDE plugins (PyCharm, IntelliJ)
+MIT License — free to use, modify, and distribute.
 
-## 📚 Resources
+---
 
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Streamlit Documentation](https://docs.streamlit.io/)
-- [OpenAI API](https://platform.openai.com/docs/api-reference)
-- [Claude API](https://docs.anthropic.com/)
-- [Hugging Face](https://huggingface.co/)
+## 👩‍💻 Built With
 
+- [Streamlit](https://streamlit.io) — UI framework
+- [FastAPI](https://fastapi.tiangolo.com) — API backend
+- [Python AST](https://docs.python.org/3/library/ast.html) — Python code analysis
+- [aiohttp](https://docs.aiohttp.org) — Async HTTP client
 
+---
+
+> Built with ❤️ | For demonstration purposes — always review AI feedback critically.
